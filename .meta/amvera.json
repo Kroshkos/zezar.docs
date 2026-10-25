@@ -1,0 +1,11 @@
+{
+  "templateName": "static",
+  "framework": "html",
+  "name": "zezar-site",
+  "options": {
+    "rootPath": "/",
+    "buildCommand": "",
+    "startCommand": "",
+    "nodeVersion": ""
+  }
+}

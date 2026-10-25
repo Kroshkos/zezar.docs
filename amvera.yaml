@@ -1,0 +1,14 @@
+# Конфигурация деплоя на Amvera — сайт документации и новостей «ЦЕЗАРЬ»
+# Документация: https://docs.amvera.ru/applications/configuration/config-file.html
+meta:
+  environment: node
+  toolchain:
+    name: browser      # статическое браузерное приложение (nginx раздаёт static/)
+    version: "18"
+
+build:
+  pre_start:           # перед запуском собрать контент из Markdown-папок
+    - pip install -r requirements.txt --quiet
+    - python3 content_site.py
+  artifacts:
+    "static": /        # в корень веб-сервера кладём только содержимое static/

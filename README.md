@@ -8,9 +8,9 @@
 ```
 news/               ← НОВОСТИ: каждый .md — статья в разделе «Новости»
 docs/               ← ДОКУМЕНТАЦИЯ: каждый .md — статья в разделе «Документация»
-static/             ← сам сайт (index.html, css/, js/) + генерируемый content.json
-content_site.py     ← генератор: собирает все .md в static/content.json
-requirements.txt    ← python-markdown (для рендера Markdown → HTML при деплое)
+build/content-gen.mjs ← генератор: собирает все .md в static/content.json (запускается при сборке)
+static/             ← сам сайт (index.html, css/, js/) + content.json
+package.json        ← npm-скрипт build (Node.JS Browser профиль Amvera)
 amvera.yaml         ← конфигурация деплоя на Amvera
 ```
 
@@ -32,11 +32,15 @@ order: 10               # только для docs: порядок в оглав
 
 3. Сделайте push в `main` — Amvera соберёт `content.json` и обновит сайт.
 
-Локально пересобрать контент: `python3 content_site.py`.
+Локально пересобрать контент: `npm install && npm run build`.
 
 ## Деплой на Amvera
 
-Проект — статическое браузерное приложение (профиль Node.JS Browser): nginx
-раздаёт содержимое `static/`, а перед запуском выполняется `pre_start` —
-установка `markdown` и запуск `content_site.py`. Настройка вебхуков GitHub
-описана в [docs.amvera.ru](https://docs.amvera.ru/applications/git/webhooks.html).
+Профиль **Node.JS Browser** (https://docs.amvera.ru/applications/environments/nodejs-browser.html):
+при сборке Amvera выполняет `npm install && npm run build` — скрипт build
+генерирует `static/content.json` из Markdown-папок; затем nginx раздаёт
+содержимое `static/` (задано через `build.artifacts: {"static/*": /}`).
+Секции `pre_start` в конфиге нет — её не поддерживает Amvera, вся подготовка
+контента идёт штатной npm-командой сборки.
+
+Настройка привязки GitHub и вебхуков: https://docs.amvera.ru/applications/git/webhooks.html

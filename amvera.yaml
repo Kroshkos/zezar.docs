@@ -1,14 +1,16 @@
 # Конфигурация деплоя на Amvera — сайт документации и новостей «ЦЕЗАРЬ»
-# Документация: https://docs.amvera.ru/applications/configuration/config-file.html
+# Документация: https://docs.amvera.ru/applications/environments/nodejs-browser.html
+#
+# Профиль Node.JS Browser: при сборке выполняется `npm install && npm run build`,
+# затем nginx раздаёт содержимое артефактов (папка static/) с SPA-роутингом.
+# Контент сайта (news/*.md, docs/*.md) собирается в static/content.json
+# скриптом build/content-gen.mjs на Node.js прямо во время сборки (см. package.json).
 meta:
   environment: node
   toolchain:
-    name: browser      # статическое браузерное приложение (nginx раздаёт static/)
+    name: browser
     version: "18"
 
 build:
-  pre_start:           # перед запуском собрать контент из Markdown-папок
-    - pip install -r requirements.txt --quiet
-    - python3 content_site.py
   artifacts:
-    "static": /        # в корень веб-сервера кладём только содержимое static/
+    "static/*": /

@@ -1,0 +1,13 @@
+{
+  "name": "zezar-docs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт документации и новостей ЦЕЗАРЬ: Markdown из news/ и docs/ -> static/content.json",
+  "type": "module",
+  "scripts": {
+    "build": "node build/content-gen.mjs"
+  },
+  "dependencies": {
+    "marked": "^12.0.0"
+  }
+}

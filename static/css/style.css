@@ -58,7 +58,16 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   transition: background .3s ease, color .3s ease;
+  /* Sticky-footer: body — flex-колонка на всю высоту экрана,
+     main растягивается, футер всегда прижат к нижнему краю */
+  min-height: 100vh;
+  min-height: 100dvh; /* мобильные браузеры (скрывающиеся панели) */
+  display: flex;
+  flex-direction: column;
 }
+
+main { flex: 1 0 auto; }
+.site-footer { flex-shrink: 0; }
 
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
@@ -420,14 +429,47 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Футер ---------- */
 .site-footer { border-top: 1px solid var(--border); background: var(--bg-elev); }
-.footer-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap; padding: 26px 24px;
-  color: var(--text-muted); font-size: 14px;
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 32px;
+  padding: 44px 24px 36px;
 }
-.footer-nav { display: flex; gap: 18px; }
-.footer-nav a { color: var(--text-muted); }
-.footer-nav a:hover { color: var(--accent); text-decoration: none; }
+.footer-col h4 {
+  margin: 0 0 14px;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+}
+.footer-logo {
+  font-weight: 800;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.footer-about p { margin: 0 0 10px; font-size: .92rem; color: var(--text-muted); }
+.footer-copy { font-size: .82rem !important; opacity: .8; }
+.footer-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-links a { color: var(--text-muted); font-size: .92rem; width: fit-content; transition: .2s ease; }
+.footer-links a:hover { color: var(--accent); text-decoration: none; transform: translateX(2px); }
+.footer-author { margin: 0 0 10px; font-size: .92rem; }
+.footer-contacts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.footer-contacts a {
+  display: inline-flex; align-items: center; gap: 9px;
+  color: var(--text-muted); font-size: .92rem; width: fit-content;
+  padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--bg-soft); transition: .2s ease;
+}
+.footer-contacts a:hover {
+  color: var(--accent); text-decoration: none;
+  border-color: var(--accent); box-shadow: 0 4px 14px var(--accent-soft);
+  transform: translateY(-1px);
+}
+.footer-contacts svg { flex-shrink: 0; }
 
 /* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -439,6 +481,10 @@ a:hover { text-decoration: underline; }
 .reveal.shown { opacity: 1; transform: none; }
 
 /* ---------- Адаптив ---------- */
+@media (max-width: 1100px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 26px; }
+}
+
 @media (max-width: 960px) {
   .docs-layout, .news-layout { grid-template-columns: 1fr; }
   .docs-sidebar, .news-sidebar, .toc-right { position: static; max-height: none; }
@@ -470,6 +516,30 @@ a:hover { text-decoration: underline; }
   .hero { padding: 40px 10px 30px; }
   .article-panel { padding: 22px 18px; }
   .header-inner { gap: 10px; }
+
+  /* Безопасные зоны «чёлки» на iPhone */
+  .site-header { padding-top: env(safe-area-inset-top); }
+  .site-footer { padding-bottom: env(safe-area-inset-bottom); }
+
+  .container { padding: 0 16px; }
+  .page { padding: 24px 0 56px; }
+  .markdown-body table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .modal-box { width: min(94vw, 640px); }
+}
+
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 22px; padding: 32px 16px 26px; }
+  .hero-title { font-size: clamp(30px, 8vw, 40px); }
+  .hero-buttons { flex-direction: column; align-items: stretch; }
+  .hero-buttons .btn { justify-content: center; }
+  .search-trigger kbd { display: none; }
+  .to-top { bottom: calc(16px + env(safe-area-inset-bottom)); right: 14px; }
+}
+
+/* Очень узкие экраны (360px и меньше) */
+@media (max-width: 380px) {
+  html { font-size: 15px; }
+  .logo-text small { display: none; }
 }
 
 /* ---------- Уважение к prefers-reduced-motion ---------- */

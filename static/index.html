@@ -2,7 +2,9 @@
 <html lang="ru" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0d1120" media="(prefers-color-scheme: dark)" />
   <meta name="description" content="Zezar (ЦЕЗАРЬ) — официальная документация и новости проекта" />
   <title>Zezar — Документация и новости</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>" />
@@ -181,15 +183,50 @@
 
   <!-- ===== Подвал ===== -->
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© 2026 Проект <strong>Zezar</strong>. Документация и новости.</p>
-      <nav class="footer-nav">
-        <a href="#home">Главная</a>
-        <a href="#docs">Документация</a>
-        <a href="#news">Новости</a>
-        <a href="#roadmap">Дорожная карта</a>
-        <a href="https://github.com/Kroshkos/Zezar" target="_blank" rel="noopener">GitHub</a>
-      </nav>
+    <div class="container footer-grid">
+      <div class="footer-col footer-about">
+        <div class="footer-logo">⚔️ ЦЕЗАРЬ</div>
+        <p>Платформа автоматизации и интеграций проекта <strong>Zezar</strong>: документация, новости и дорожная карта.</p>
+        <p class="footer-copy">© 2026 Проект <strong>Zezar</strong></p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Разделы</h4>
+        <nav class="footer-links">
+          <a href="#home">Главная</a>
+          <a href="#docs">Документация</a>
+          <a href="#news">Новости</a>
+          <a href="#roadmap">Дорожная карта</a>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <h4>Проект</h4>
+        <nav class="footer-links">
+          <a href="https://github.com/Kroshkos/Zezar" target="_blank" rel="noopener">GitHub: Zezar</a>
+          <a href="https://github.com/Kroshkos/zezar.docs" target="_blank" rel="noopener">GitHub: zezar.docs</a>
+          <a href="https://github.com/Kroshkos/Zezar/issues" target="_blank" rel="noopener">Предложить идею</a>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <h4>Автор и контакты</h4>
+        <p class="footer-author">👤 Автор платформы — <strong>Kroshko</strong></p>
+        <ul class="footer-contacts">
+          <li>
+            <a href="mailto:zezar.project@gmail.com" title="Написать на почту">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></svg>
+              <span>zezar.project@gmail.com</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://t.me/zezar_chat" target="_blank" rel="noopener" title="Telegram-канал/чат проекта">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M9.04 17.4l-.4 3.7c.57 0 .82-.24 1.12-.53l2.7-2.58 5.6 4.1c1.03.57 1.76.27 2.04-.96L24.7 3.9c.32-1.5-.54-2.1-1.53-1.73L1.8 9.66C.37 10.23.4 11.06 1.68 11.44l5.62 1.74L19.3 5.6c.6-.36 1.15-.16.7.2l-10.96 9.6z"/></svg>
+              <span>@zezar_chat</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </footer>
 

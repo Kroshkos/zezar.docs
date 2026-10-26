@@ -274,11 +274,8 @@
       }
     });
 
-    // Внешние ссылки — в новой вкладке
-    container.querySelectorAll("a[href^='http']").forEach(a => {
-      a.target = "_blank";
-      a.rel = "noopener";
-    });
+    // Ссылки на статьи документации (.md-перекрёстки) и внешние ссылки
+    decorateDocLinks(container);
 
     // Кнопка «копировать» у блоков кода
     container.querySelectorAll("pre").forEach(pre => {
@@ -321,6 +318,39 @@
         tocRightList.appendChild(li);
       });
     }
+  }
+
+  /* ---------- Ссылки на статьи документации ----------
+     Поддержка форматов: [Текст](INSTRUCTION_USER.md), ./DEPLOY#..., #docs/<id>,
+     а также "ГЛАВНАЯ" / "/" — внутренняя навигация SPA без перезагрузки. */
+  const DOC_ID_ALIASES = {}; // имя файла без расширения -> id статьи (заполняется при загрузке контента)
+
+  function resolveDocHref(href) {
+    if (!href || href.startsWith("http") || href.startsWith("mailto")) return null;
+    if (href === "#docs/" || href === "docs") return "#docs";
+    let m = href.match(/^#docs\/(.+)$/);
+    if (m) return "#docs/" + m[1];
+    if (/^(ГЛАВНАЯ|Главная|главная)$/.test(href)) return "#home";
+    if (href === "/") return "#home";
+    m = href.match(/^(?:\.\/)?(?:docs\/)?([A-Za-z0-9_-]+?)(?:\.md)?(?:#.*)?$/i);
+    if (m) {
+      const key = m[1].toUpperCase();
+      if (DOC_ID_ALIASES[key]) return "#docs/" + DOC_ID_ALIASES[key];
+    }
+    return null;
+  }
+
+  function decorateDocLinks(container) {
+    container.querySelectorAll("a[href]").forEach(a => {
+      const target = resolveDocHref(a.getAttribute("href"));
+      if (target) {
+        a.setAttribute("href", target);
+        a.classList.add("doc-crosslink");
+      } else if (!a.getAttribute("href").startsWith("#")) {
+        a.target = "_blank";
+        a.rel = "noopener";
+      }
+    });
   }
 
   /* ---------- Документация ---------- */
@@ -585,6 +615,8 @@
       const data = await resp.json();
       docs = data.docs || [];
       news = data.news || [];
+      // Алиасы для перекрёстных ссылок вида [Текст](INSTRUCTION_USER.md)
+      docs.forEach(d => { DOC_ID_ALIASES[String(d.id).toUpperCase()] = d.id; });
     } catch (e) {
       docs = [];
       news = [];

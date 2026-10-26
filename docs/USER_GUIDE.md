@@ -4,16 +4,9 @@ order: 10
 date: 2026-10-26
 tag: Guide
 ---
-
-# Руководство пользователя «ЦЕЗАРЬ» (быстрый старт)
-
-Краткий общий обзор для всех ролей. Подробные развёрнутые руководства — по ролям:
-
-* Участник → [INSTRUCTION_USER.md](INSTRUCTION_USER.md)
-* Руководитель подразделения → [INSTRUCTION_HEAD.md](INSTRUCTION_HEAD.md)
-* Координатор → [INSTRUCTION_COORDINATOR.md](INSTRUCTION_COORDINATOR.md)
-* Администратор → [INSTRUCTION_ADMIN.md](INSTRUCTION_ADMIN.md)
-* Технические специалисты / DevOps → [INSTRUCTION_TECH.md](INSTRUCTION_TECH.md), [DEPLOY.md](DEPLOY.md)
+* Координатор → [INSTRUCTION_COORDINATOR](#docs/INSTRUCTION_COORDINATOR)
+* Администратор → [INSTRUCTION_ADMIN](#docs/INSTRUCTION_ADMIN)
+* Технические специалисты / DevOps → [INSTRUCTION_TECH](#docs/INSTRUCTION_TECH), [DEPLOY](#docs/DEPLOY)
 
 ---
 

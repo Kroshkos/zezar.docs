@@ -4,13 +4,6 @@ order: 80
 date: 2026-10-26
 tag: Architecture
 ---
-
-# Цезарь — УСИП: Шаг 1 (структура, модели БД, интеграции)
-
-Полный текст ответа по Шагу 1 — см. финальное сообщение в чате. Кратко:
-
-## Структура
-- `app/` — ядро: config, module_registry (плагины), access (RBAC+шеринг), db (async SQLite в /data), models, routers, templates, static (верстка из sipm_lite_v3.html без изменений).
 - `modules/<name>/` — плагины: manifest.py (ModuleSpec) + router + шаблоны + payload-модели. Дашборд, Задачи, Проектная работа, Совещания, Администрирование подразделения.
 - `integrations/` — yandex_calendar (WebDAV/CalDAV), telegram_bot, ics.
 - `workers/` — outbox_worker, calendar_sync, scheduler (ARQ cron / BackgroundTasks в dev).

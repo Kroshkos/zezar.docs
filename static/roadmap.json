@@ -1,62 +1,98 @@
 {
-  "title": "Дорожная карта Zezar",
+  "title": "Дорожная карта «ЦЕЗАРЬ»",
   "updated": "2026-10-26",
+  "legend": "Статусы и цели соответствуют фактическому коду репозитория Zezar (коммит ef73015, PR #121). Отмечайте цели, которые достигнуты в вашем подразделении, — прогресс сохранится в браузере.",
   "phases": [
     {
-      "id": "foundation",
-      "name": "Фундамент",
-      "tagline": "Ядро системы и первые пользователи",
+      "id": "core",
+      "name": "Ядро платформы",
+      "tagline": "Модульный веб-сервис управления подразделениями",
       "icon": "🏛️",
-      "period": "Q3–Q4 2026",
-      "status": "active",
+      "period": "Q3–Q4 2026 · готово",
+      "status": "done",
       "goals": [
-        { "id": "core", "text": "Ядро ЦЕЗАРЬ: FastAPI + SQLite, роли (пользователь, координатор, администратор, техник)", "done": true },
-        { "id": "deploy", "text": "Деплой на Amvera с постоянным хранилищем /data", "done": true },
-        { "id": "docs-site", "text": "Портал документации и новостей (zezar.docs)", "done": true },
-        { "id": "auth", "text": "Ролевая модель доступа и журнал действий", "done": true },
-        { "id": "backup", "text": "Автоматическое резервное копирование базы данных", "done": false }
+        { "id": "plugins", "text": "Плагиная архитектура: ядро + реестр модулей (manifest.py), 10 модулей — Дашборд, Задачи, Проекты, Совещания, Админка подразделения, Документы, ПО, Гранты, Стипендии, Приоритеты", "done": true },
+        { "id": "rbac", "text": "Ролевая модель ADMIN / COORDINATOR / HEAD / MEMBER с мгновенным пересмотром прав (acl_epoch) и кэшем разрешений", "done": true },
+        { "id": "spaces", "text": "Изолированные рабочие пространства подразделений и межпространственный шеринг сущностей (READ / EDIT / FULL)", "done": true },
+        { "id": "entities", "text": "Полиморфный реестр Entity: единые карточки, ответственные от каждого подразделения, аудит и Outbox-очередь фоновых задач", "done": true },
+        { "id": "auth", "text": "Отказ от OAuth Яндекс ID: локальный вход по логину и паролю, принудительная смена пароля, защита от подбора", "done": true },
+        { "id": "alembic", "text": "Миграции схемы на Alembic с авто-апгрейдом при старте и самоисцелением легаси-БД", "done": true }
       ]
     },
     {
-      "id": "automation",
-      "name": "Автоматизация",
-      "tagline": "Меньше ручной работы — больше контроля",
-      "icon": "⚙️",
-      "period": "Q1 2027",
-      "status": "planned",
+      "id": "deploy",
+      "name": "Продакшен-развёртывание",
+      "tagline": "Облако Amvera и Docker для самостоятельного хостинга",
+      "icon": "☁️",
+      "period": "Q4 2026 · готово",
+      "status": "done",
       "goals": [
-        { "id": "auto-status", "text": "Автообновление статусов заявок по расписанию", "done": false },
-        { "id": "notify", "text": "Уведомления ответственных (email / Telegram)", "done": false },
-        { "id": "reports", "text": "Регламентные отчёты в Excel/PDF одним нажатием", "done": false },
-        { "id": "reminders", "text": "Напоминания о просроченных задачах координаторам", "done": false }
+        { "id": "amvera", "text": "Настроен деплой на Amvera: python/pip, ASGI uvicorn на containerPort, постоянное хранилище БД в /data", "done": true },
+        { "id": "docker", "text": "Dockerfile и docker-compose для self-hosted VPS (non-root контейнер, healthcheck)", "done": true },
+        { "id": "failfast", "text": "Fail-fast проверка конфигурации в production: SECRET_KEY, креды env-администратора, secure-cookie, CSP/XFO/nosniff", "done": true },
+        { "id": "docs-site", "text": "Этот сайт документации и новостей (репозиторий zezar.docs) с автообновлением из Markdown", "done": true },
+        { "id": "backup", "text": "Регламентное резервное копирование базы данных из /data", "done": false }
+      ]
+    },
+    {
+      "id": "business",
+      "name": "Бизнес-функции",
+      "tagline": "Справочники, уведомления, печатные карточки, холст workflow",
+      "icon": "⚙️",
+      "period": "Q4 2026 – Q1 2027 · готово",
+      "status": "done",
+      "goals": [
+        { "id": "refdata", "text": "Иерархический сервис справочников: глобальные шаблоны статусов/приоритетов/типов/маршрутов и копии подразделений", "done": true },
+        { "id": "notify", "text": "Сценарии уведомлений: напоминания о просрочках, шаблоны рассылки, ручной broadcast, страница «Интеграции»", "done": true },
+        { "id": "cards", "text": "Печатные карточки совещаний: листы A4/A3, QR-коды на профили сущностей, фильтры изменений, журнал печати", "done": true },
+        { "id": "profile", "text": "Профиль сущности: модальная карточка, связи между сущностями, холст workflow, deep-link ?entity=", "done": true },
+        { "id": "dashboards", "text": "Обновлённый дашборд с KPI-агрегацией на сервере и режимом «Вся система»", "done": true },
+        { "id": "linkage", "text": "Привязка документов, грантов, стипендий, ПО и приоритетов к проектам (project_entity_uid)", "done": true }
+      ]
+    },
+    {
+      "id": "integrations",
+      "name": "Интеграции",
+      "tagline": "Telegram, Яндекс Календарь, мобильное приложение",
+      "icon": "🔌",
+      "period": "Q4 2026 – Q1 2027 · почти готово",
+      "status": "active",
+      "goals": [
+        { "id": "tg", "text": "Telegram-бот: привязка без кодов (логин+пароль), уведомления по области видимости ролей, команды /mute /unmute /help", "done": true },
+        { "id": "tg-admin", "text": "Бот-помощник администратора: навигация persistent-клавиатурами и inline-кнопками", "done": true },
+        { "id": "webdav", "text": "Яндекс Календарь через WebDAV (вместо закрытого CalDAV): автосинхронизация событий, детерминированные UID", "done": true },
+        { "id": "mobile-api", "text": "Mobile API v1.6: Bearer-авторизация, /api/mobile/*, push-уведомления Expo, лента событий, универсальное создание карточек", "done": true },
+        { "id": "qr-gateway", "text": "QR-шлюз: гостевые токены, deep links, Android App Links (.well-known/assetlinks.json)", "done": true },
+        { "id": "mobile-app", "text": "Публичный релиз мобильного приложения Zezar-app в сторах", "done": false }
+      ]
+    },
+    {
+      "id": "quality",
+      "name": "Качество и надёжность",
+      "tagline": "Автотесты, RBAC-гаранты, стабильность продакшена",
+      "icon": "🛡️",
+      "period": "Q1 2027 · в работе",
+      "status": "active",
+      "goals": [
+        { "id": "e2e", "text": "E2E-свит: 16 сквозных сценариев (RBAC, CRUD всех модулей, outbox-воркер, шеринг, инварианты ответственных)", "done": true },
+        { "id": "smoke", "text": "Смоук-тест Mobile API — расширен до 24 проверок", "done": true },
+        { "id": "permtests", "text": "Регресс на исправления прав доступа: инвариант «последний руководитель», мягкая инвалидация ACL-кэша", "done": true },
+        { "id": "ci", "text": "Автостарт тестов в CI при каждом pull request", "done": false },
+        { "id": "coverage", "text": "Покрытие критичных сервисов (access, entity_service, refdata) unit-тестами", "done": false }
       ]
     },
     {
       "id": "insight",
-      "name": "Аналитика",
+      "name": "Аналитика и отчётность",
       "tagline": "Данные, которые помогают решать",
       "icon": "📊",
-      "period": "Q2 2027",
+      "period": "Q2 2027 · планируется",
       "status": "planned",
       "goals": [
-        { "id": "dashboards", "text": "Интерактивные дашборды загрузки подразделений", "done": false },
-        { "id": "kpi", "text": "KPI и тренды: время закрытия, SLA, узкие места", "done": false },
-        { "id": "export", "text": "Выгрузка срезов данных для внешних систем", "done": false },
-        { "id": "forecast", "text": "Прогноз загрузки на основе истории", "done": false }
-      ]
-    },
-    {
-      "id": "integration",
-      "name": "Интеграции",
-      "tagline": "ЦЕЗАРЬ говорит с другими системами",
-      "icon": "🔌",
-      "period": "Q3 2027",
-      "status": "planned",
-      "goals": [
-        { "id": "api-v1", "text": "Публичное REST API v1 с документацией и ключами", "done": false },
-        { "id": "webhooks", "text": "Вебхуки событий для внешних сервисов", "done": false },
-        { "id": "sso", "text": "Единый вход (SSO/LDAP) для корпоративных сред", "done": false },
-        { "id": "mobile", "text": "Мобильная версия с офлайн-режимом заявок", "done": false }
+        { "id": "reports", "text": "Регламентные отчёты в Excel/PDF одним нажатием", "done": false },
+        { "id": "kpi-trends", "text": "Тренды и SLA: время закрытия карточек, узкие места маршрутов, динамика загрузки", "done": false },
+        { "id": "export", "text": "Выгрузка срезов данных для внешних систем (CSV/API)", "done": false },
+        { "id": "forecast", "text": "Прогноз загрузки подразделений на основе истории", "done": false }
       ]
     },
     {
@@ -64,13 +100,13 @@
       "name": "Платформа",
       "tagline": "Открытое расширение без правки ядра",
       "icon": "🚀",
-      "period": "2028",
+      "period": "2027–2028 · идея",
       "status": "idea",
       "goals": [
-        { "id": "plugins", "text": "Плагины: пользовательские поля, статусы и маршруты", "done": false },
-        { "id": "multi-org", "text": "Мультиорганизационность: изолированные контуры", "done": false },
-        { "id": "open-source", "text": "Публичный релиз ядра под открытой лицензией", "done": false },
-        { "id": "community", "text": "Сообщество: форум, вклад участников, роадмап-голосование", "done": false }
+        { "id": "public-api", "text": "Публичное REST API v1 с документацией и ключами доступа", "done": false },
+        { "id": "webhooks", "text": "Вебхуки событий для внешних сервисов", "done": false },
+        { "id": "custom-modules", "text": "Конструктор пользовательских модулей и полей поверх реестра ModuleSpec", "done": false },
+        { "id": "open-source", "text": "Публичный релиз ядра под открытой лицензией", "done": false }
       ]
     }
   ]

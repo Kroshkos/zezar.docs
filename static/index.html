@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Zezar — документация и новости проекта" />
+  <meta name="description" content="Zezar (ЦЕЗАРЬ) — официальная документация и новости проекта" />
   <title>Zezar — Документация и новости</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>" />
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
 
+  <!-- Прогресс-бар чтения -->
+  <div class="reading-progress" id="readingProgress"></div>
+
   <!-- ===== Шапка ===== -->
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
     <div class="container header-inner">
       <a href="#home" class="logo">
         <span class="logo-mark">Z</span>
-        <span class="logo-text">Zezar</span>
+        <span class="logo-text">Zezar<small>документация · новости</small></span>
       </a>
       <nav class="main-nav" id="mainNav">
         <a href="#home" class="nav-link active">Главная</a>
@@ -22,8 +26,15 @@
         <a href="#news" class="nav-link">Новости</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-outline btn-sm" href="https://github.com/Kroshkos/Zezar" target="_blank" rel="noopener">
-          GitHub ↗
+        <button class="icon-btn" id="searchBtn" title="Поиск (Ctrl+K)" aria-label="Поиск">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        </button>
+        <button class="icon-btn" id="themeBtn" title="Переключить тему" aria-label="Тема">
+          <span class="theme-icon-dark">🌙</span><span class="theme-icon-light">☀️</span>
+        </button>
+        <a class="btn btn-outline btn-sm github-btn" href="https://github.com/Kroshkos/Zezar" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.4 1.2-3.2-.2-.6-.6-1.6 0-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.6 0 3.2.8.8 1.2 2 1.2 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+          <span>GitHub</span>
         </a>
         <button class="burger" id="burgerBtn" aria-label="Открыть меню">
           <span></span><span></span><span></span>
@@ -37,40 +48,44 @@
     <!-- ===== Главная страница ===== -->
     <section id="home" class="page active">
       <div class="hero container">
-        <h1 class="hero-title">Проект <span class="accent">Zezar</span></h1>
+        <div class="hero-badge">🏛️ Официальный портал проекта</div>
+        <h1 class="hero-title">Проект <span class="grad-text">Zezar</span></h1>
         <p class="hero-subtitle">
-          Добро пожаловать на официальный сайт проекта Zezar! Здесь собрана полная
-          документация и все последние новости о развитии проекта.
+          Полная документация и все новости системы «ЦЕЗАРЬ» в одном месте:
+          руководства для каждой роли, архитектура, деплой и дорожная карта развития.
         </p>
         <div class="hero-buttons">
-          <a href="#docs" class="btn btn-primary" data-nav>Читать документацию</a>
-          <a href="#news" class="btn btn-outline" data-nav>Последние новости</a>
+          <a href="#docs" class="btn btn-primary">📚 Читать документацию</a>
+          <a href="#news" class="btn btn-outline">📰 Последние новости</a>
         </div>
       </div>
 
       <div class="container features">
-        <div class="feature-card">
+        <a href="#docs" class="feature-card tilt">
           <div class="feature-icon">📚</div>
           <h3>Документация</h3>
-          <p>Пошаговые руководства по установке, конфигурации и использованию Zezar.</p>
-          <a href="#docs" class="feature-link" data-nav>Перейти к документации →</a>
-        </div>
-        <div class="feature-card">
+          <p>Пошаговые руководства по установке, конфигурации и использованию Zezar для всех ролей.</p>
+          <span class="feature-link">Перейти к документации →</span>
+        </a>
+        <a href="#news" class="feature-card tilt">
           <div class="feature-icon">📰</div>
           <h3>Новости</h3>
-          <p>Релизы, изменения и планы развития проекта — всё в одном месте.</p>
-          <a href="#news" class="feature-link" data-nav>Смотреть новости →</a>
-        </div>
-        <div class="feature-card">
+          <p>Релизы, изменения и планы развития проекта — всё в одном месте, по датам.</p>
+          <span class="feature-link">Смотреть новости →</span>
+        </a>
+        <a href="https://github.com/Kroshkos/Zezar" target="_blank" rel="noopener" class="feature-card tilt">
           <div class="feature-icon">💻</div>
           <h3>Исходный код</h3>
-          <p>Репозиторий проекта доступен открыто — изучайте, форкайте, участвуйте.</p>
-          <a href="https://github.com/Kroshkos/Zezar" class="feature-link" target="_blank" rel="noopener">Открыть на GitHub →</a>
-        </div>
+          <p>Репозиторий проекта на GitHub — изучайте, ставьте звёзды, участвуйте в развитии.</p>
+          <span class="feature-link">Открыть на GitHub →</span>
+        </a>
       </div>
 
       <div class="container latest-preview">
-        <h2>Последние новости</h2>
+        <div class="section-head">
+          <h2>Последние новости</h2>
+          <a href="#news" class="see-all">Все новости →</a>
+        </div>
         <ul class="preview-list" id="homeNewsPreview"><!-- заполняется из JS --></ul>
       </div>
     </section>
@@ -78,15 +93,23 @@
     <!-- ===== Страница документации ===== -->
     <section id="docs" class="page">
       <div class="container docs-layout">
-        <aside class="docs-sidebar">
+        <aside class="docs-sidebar" id="docsSidebar">
+          <div class="sidebar-search">
+            <input type="search" id="docsFilter" placeholder="Фильтр разделов…" aria-label="Фильтр документации" />
+          </div>
           <h4>Разделы</h4>
-          <nav id="docsToc"><!-- генерируется из JS --></nav>
+          <nav id="docsToc" class="docs-toc"><!-- генерируется из JS --></nav>
         </aside>
 
-        <article class="docs-content" id="docsContent">
+        <article class="docs-content article-panel" id="docsContent">
           <h1>Документация Zezar</h1>
           <p class="muted">Загрузка…</p>
         </article>
+
+        <aside class="toc-right" id="tocRight" hidden>
+          <h5>На этой странице</h5>
+          <ul id="tocRightList"></ul>
+        </aside>
       </div>
     </section>
 
@@ -98,7 +121,7 @@
           <ul id="newsList" class="news-list"><!-- генерируется из JS --></ul>
         </aside>
 
-        <article class="news-content" id="newsContent">
+        <article class="news-content article-panel" id="newsContent">
           <h1>Новости проекта</h1>
           <p class="muted">Загрузка…</p>
         </article>
@@ -110,17 +133,28 @@
   <!-- ===== Подвал ===== -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>© 2026 Проект <strong>Zezar</strong>. Все права защищены.</p>
+      <p>© 2026 Проект <strong>Zezar</strong>. Документация и новости.</p>
       <nav class="footer-nav">
-        <a href="#home" data-nav>Главная</a>
-        <a href="#docs" data-nav>Документация</a>
-        <a href="#news" data-nav>Новости</a>
+        <a href="#home">Главная</a>
+        <a href="#docs">Документация</a>
+        <a href="#news">Новости</a>
         <a href="https://github.com/Kroshkos/Zezar" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>
   </footer>
 
-  
-  <script src="/static/js/app.js"></script>
+  <!-- ===== Модальное окно поиска ===== -->
+  <div class="modal" id="searchModal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Поиск">
+      <input type="search" id="searchInput" placeholder="Поиск по документации и новостям…" autocomplete="off" />
+      <div class="search-results" id="searchResults"></div>
+      <div class="search-hint">↑↓ — навигация · Enter — открыть · Esc — закрыть</div>
+    </div>
+  </div>
+
+  <button class="to-top" id="toTopBtn" aria-label="Наверх">↑</button>
+
+  <script src="/js/app.js"></script>
 </body>
 </html>

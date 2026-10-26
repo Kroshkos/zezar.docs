@@ -24,8 +24,8 @@
       "name": "Продакшен-развёртывание",
       "tagline": "Облако Amvera и Docker для самостоятельного хостинга",
       "icon": "☁️",
-      "period": "Q4 2026 · готово",
-      "status": "done",
+      "period": "Q4 2026 · почти готово",
+      "status": "active",
       "goals": [
         { "id": "amvera", "text": "Настроен деплой на Amvera: python/pip, ASGI uvicorn на containerPort, постоянное хранилище БД в /data", "done": true },
         { "id": "docker", "text": "Dockerfile и docker-compose для self-hosted VPS (non-root контейнер, healthcheck)", "done": true },

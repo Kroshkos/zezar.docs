@@ -21,6 +21,203 @@
   let docs = [];
   let news = [];
 
+  /* ---------- Дорожная карта ---------- */
+  let roadmap = null;
+  const rmChecked = new Set(JSON.parse(localStorage.getItem("zezar-rm-checked") || "[]"));
+  let rmFilter = "all";
+  let rmSort = "chrono";
+  let rmConfettiFired = false;
+
+  const STATUS_META = {
+    done:    { label: "Завершён",   cls: "done" },
+    active:  { label: "В работе",   cls: "active" },
+    planned: { label: "Планируется", cls: "planned" },
+    idea:    { label: "Идея",       cls: "idea" },
+  };
+
+  function goalDone(phase, goal) {
+    return goal.done === true || rmChecked.has(phase.id + "/" + goal.id);
+  }
+
+  function phaseProgress(phase) {
+    if (!phase.goals.length) return 0;
+    return Math.round(100 * phase.goals.filter(g => goalDone(phase, g)).length / phase.goals.length);
+  }
+
+  function saveRmChecked() {
+    localStorage.setItem("zezar-rm-checked", JSON.stringify([...rmChecked]));
+  }
+
+  function celebrate() {
+    const box = document.getElementById("rmTimeline");
+    if (!box) return;
+    for (let i = 0; i < 26; i++) {
+      const s = document.createElement("span");
+      s.className = "confetti";
+      s.style.left = (5 + Math.random() * 90) + "%";
+      s.style.background = ["#6d5cff", "#00c2ff", "#ffb020", "#22c55e", "#ec4899"][i % 5];
+      s.style.animationDelay = (Math.random() * 0.4) + "s";
+      s.style.animationDuration = (1.1 + Math.random()) + "s";
+      box.appendChild(s);
+      setTimeout(() => s.remove(), 2200);
+    }
+  }
+
+  function renderRoadmap() {
+    const timeline = document.getElementById("rmTimeline");
+    if (!roadmap) {
+      timeline.innerHTML = '<div class="empty-hint">Дорожная карта недоступна: нет файла <code>roadmap.json</code></div>';
+      return;
+    }
+    let phases = roadmap.phases.map(p => ({ ...p, progress: phaseProgress(p) }));
+
+    // фильтр по статусу этапа (готовые этапы видны в любом фильтре, кроме «все»)
+    if (rmFilter !== "all") {
+      phases = phases.filter(p =>
+        p.progress === 100 ? (rmFilter === "done") :
+        rmFilter === "active" ? (p.status === "active" && p.progress < 100) :
+        rmFilter === "planned" ? (p.status !== "active" && p.progress < 100) :
+        true
+      );
+    }
+    if (rmSort === "progress") phases.sort((a, b) => b.progress - a.progress);
+
+    timeline.innerHTML = "";
+    if (!phases.length) {
+      timeline.innerHTML = '<div class="empty-hint">Нет этапов под выбранный фильтр</div>';
+    }
+
+    phases.forEach((phase, idx) => {
+      const card = document.createElement("article");
+      card.className = "rm-card reveal st-" + (STATUS_META[phase.status]?.cls || "planned");
+      card.dataset.phase = phase.id;
+
+      const doneCount = phase.goals.filter(g => goalDone(phase, g)).length;
+      const sm = STATUS_META[phase.status] || STATUS_META.planned;
+      const isFinished = phase.progress === 100;
+
+      card.innerHTML =
+        '<div class="rm-node">' + (isFinished ? "✓" : idx + 1) + "</div>" +
+        '<div class="rm-card-body">' +
+          '<div class="rm-card-head">' +
+            '<div class="rm-phase-icon">' + (phase.icon || "🧭") + "</div>" +
+            '<div class="rm-card-titles">' +
+              "<h3>" + esc(phase.name) + "</h3>" +
+              '<p class="rm-tagline">' + esc(phase.tagline || "") + "</p>" +
+            "</div>" +
+            '<div class="rm-badges">' +
+              '<span class="rm-badge period">🗓 ' + esc(phase.period || "") + "</span>" +
+              '<span class="rm-badge status ' + sm.cls + '">' + (isFinished ? "🏁 Завершён" : sm.label) + "</span>" +
+            "</div>" +
+          "</div>" +
+          '<div class="rm-progress-row">' +
+            '<div class="rm-bar"><i style="width:' + phase.progress + '%"></i></div>' +
+            '<span class="rm-pct">' + phase.progress + "%</span>" +
+          "</div>" +
+          '<ul class="rm-goals">' +
+            phase.goals.map(g => {
+              const done = goalDone(phase, g);
+              return '<li data-goal="' + esc(g.id) + '" class="' + (done ? "checked" : "") + '">' +
+                '<button class="rm-check" aria-pressed="' + done + '" title="' +
+                  (g.done ? "Цель закрыта командой" : "Отметить, что цель достигнута") + '"' +
+                  (g.done ? " disabled" : "") + ">" + (done ? "✓" : "") + "</button>" +
+                "<span>" + esc(g.text) + "</span>" +
+                (g.done ? '<em class="rm-team">командой</em>' : "") +
+              "</li>";
+            }).join("") +
+          "</ul>" +
+        "</div>";
+
+      // интерактивные отметки
+      card.querySelectorAll(".rm-goals li").forEach(li => {
+        const btn = li.querySelector(".rm-check");
+        if (btn.disabled) return;
+        btn.addEventListener("click", () => {
+          const key = phase.id + "/" + li.dataset.goal;
+          const nowChecked = !rmChecked.has(key);
+          nowChecked ? rmChecked.add(key) : rmChecked.delete(key);
+          saveRmChecked();
+          li.classList.toggle("checked", nowChecked);
+          btn.setAttribute("aria-pressed", nowChecked);
+          btn.textContent = nowChecked ? "✓" : "";
+          updateRoadmapStats();
+          if (phaseProgress(phase) === 100 && !rmConfettiFired) {
+            rmConfettiFired = true;
+            celebrate();
+          }
+        });
+      });
+
+      timeline.appendChild(card);
+      requestAnimationFrame(() => card.classList.add("shown"));
+    });
+
+    updateRoadmapStats();
+  }
+
+  function updateRoadmapStats() {
+    if (!roadmap) return;
+    const allGoals = roadmap.phases.flatMap(p => p.goals.map(g => goalDone(p, g)));
+    const done = allGoals.filter(Boolean).length;
+    const total = allGoals.length;
+    const pct = total ? Math.round(100 * done / total) : 0;
+
+    animateNumber(document.getElementById("rmStatDone"), done);
+    document.getElementById("rmStatTotal").textContent = total;
+    document.getElementById("rmStatPct").textContent = pct + "%";
+    document.getElementById("rmBigbarFill").style.width = pct + "%";
+
+    const dots = document.getElementById("rmPhaseDots");
+    dots.innerHTML = roadmap.phases.map(p => {
+      const pr = phaseProgress(p);
+      return '<span class="rm-dot ' + (pr === 100 ? "full" : pr > 0 ? "part" : "") +
+        '" title="' + esc(p.name) + ": " + pr + '%"></span>';
+    }).join("");
+  }
+
+  function animateNumber(el, to) {
+    const from = parseInt(el.textContent, 10);
+    const start = Number.isFinite(from) ? from : 0;
+    if (start === to) { el.textContent = to; return; }
+    const t0 = Date.now();
+    (function step() {
+      const k = Math.min(1, (Date.now() - t0) / 450);
+      el.textContent = Math.round(start + (to - start) * k);
+      if (k < 1) requestAnimationFrame(step);
+      else el.textContent = to;
+    })();
+  }
+
+  document.getElementById("rmFilters").addEventListener("click", e => {
+    const chip = e.target.closest("[data-filter]");
+    if (!chip) return;
+    rmFilter = chip.dataset.filter;
+    document.querySelectorAll("#rmFilters .rm-chip").forEach(c => c.classList.toggle("active", c === chip));
+    renderRoadmap();
+  });
+
+  document.getElementById("rmSort").addEventListener("click", e => {
+    const chip = e.target.closest("[data-sort]");
+    if (!chip) return;
+    rmSort = chip.dataset.sort;
+    document.querySelectorAll("#rmSort .rm-chip").forEach(c => c.classList.toggle("active", c === chip));
+    renderRoadmap();
+  });
+
+  document.getElementById("rmResetBtn").addEventListener("click", () => {
+    rmChecked.clear();
+    rmConfettiFired = false;
+    saveRmChecked();
+    renderRoadmap();
+  });
+
+  async function loadRoadmap() {
+    try {
+      const resp = await fetch("roadmap.json", { cache: "no-store" });
+      if (resp.ok) roadmap = await resp.json();
+    } catch (e) { console.error("Не удалось загрузить дорожную карту:", e); }
+  }
+
   /* ---------- Тема (светлая/тёмная) ---------- */
   const themeBtn = document.getElementById("themeBtn");
   const savedTheme = localStorage.getItem("zezar-theme") ||
@@ -369,6 +566,9 @@
     } else if (page === "news") {
       showPage("news");
       renderNews(subId);
+    } else if (page === "roadmap") {
+      showPage("roadmap");
+      renderRoadmap();
     } else {
       showPage("home");
     }
@@ -390,6 +590,7 @@
       news = [];
       console.error("Не удалось загрузить контент сайта:", e);
     }
+    await loadRoadmap();
     renderHomePreview();
     route();
   }

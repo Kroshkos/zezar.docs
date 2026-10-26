@@ -24,6 +24,7 @@
         <a href="#home" class="nav-link active">Главная</a>
         <a href="#docs" class="nav-link">Документация</a>
         <a href="#news" class="nav-link">Новости</a>
+        <a href="#roadmap" class="nav-link">Дорожная карта</a>
       </nav>
       <div class="header-actions">
         <button class="icon-btn" id="searchBtn" title="Поиск (Ctrl+K)" aria-label="Поиск">
@@ -56,6 +57,7 @@
         </p>
         <div class="hero-buttons">
           <a href="#docs" class="btn btn-primary">📚 Читать документацию</a>
+          <a href="#roadmap" class="btn btn-grad">🗺️ Дорожная карта</a>
           <a href="#news" class="btn btn-outline">📰 Последние новости</a>
         </div>
       </div>
@@ -113,6 +115,53 @@
       </div>
     </section>
 
+    <!-- ===== Дорожная карта ===== -->
+    <section id="roadmap" class="page">
+      <div class="container roadmap-wrap">
+
+        <header class="rm-hero">
+          <div class="hero-badge">🗺️ План развития</div>
+          <h1 class="rm-title">Дорожная карта <span class="grad-text">Zezar</span></h1>
+          <p class="rm-subtitle">Пять этапов пути системы «ЦЕЗАРЬ» — от ядра до открытой платформы.
+            Отмечайте галочкой то, что уже видели в работе, — прогресс сохранится в браузере.</p>
+
+          <div class="rm-stats" id="rmStats">
+            <div class="rm-stat">
+              <div class="rm-stat-num grad-text" id="rmStatDone">0</div>
+              <div class="rm-stat-label">из <span id="rmStatTotal">0</span> целей достигнуто</div>
+            </div>
+            <div class="rm-stat-bar-box">
+              <div class="rm-stat-bar-top"><span>Общий прогресс</span><b id="rmStatPct">0%</b></div>
+              <div class="rm-bigbar"><i id="rmBigbarFill"></i></div>
+              <div class="rm-phases-dots" id="rmPhaseDots"><!-- генерируется --></div>
+            </div>
+          </div>
+
+          <div class="rm-controls">
+            <div class="rm-segmented" id="rmFilters" role="tablist" aria-label="Фильтр этапов">
+              <button class="rm-chip active" data-filter="all">Все</button>
+              <button class="rm-chip" data-filter="done">✅ Готово</button>
+              <button class="rm-chip" data-filter="active">🚧 В работе</button>
+              <button class="rm-chip" data-filter="planned">🔜 Планируется</button>
+            </div>
+            <div class="rm-segmented" id="rmSort" role="tablist" aria-label="Сортировка">
+              <button class="rm-chip active" data-sort="chrono">Хронология</button>
+              <button class="rm-chip" data-sort="progress">По прогрессу</button>
+            </div>
+            <button class="btn btn-outline btn-sm" id="rmResetBtn" title="Сбросить мои отметки">↺ Сбросить отметки</button>
+          </div>
+        </header>
+
+        <div class="rm-timeline" id="rmTimeline"><!-- генерируется из JS --></div>
+
+        <footer class="rm-footer-note">
+          <p>💡 Этапы и цели дорожной карты живут в файле <code>static/roadmap.json</code>
+             репозитория <a href="https://github.com/Kroshkos/zezar.docs" target="_blank" rel="noopener">zezar.docs</a> —
+             обновите его, и карта изменится сама. Свои цели можно предлагать через Issues основного репозитория.</p>
+        </footer>
+      </div>
+    </section>
+
     <!-- ===== Страница новостей ===== -->
     <section id="news" class="page">
       <div class="container news-layout">
@@ -138,6 +187,7 @@
         <a href="#home">Главная</a>
         <a href="#docs">Документация</a>
         <a href="#news">Новости</a>
+        <a href="#roadmap">Дорожная карта</a>
         <a href="https://github.com/Kroshkos/Zezar" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>

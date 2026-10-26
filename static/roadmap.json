@@ -61,9 +61,10 @@
         { "id": "tg", "text": "Telegram-бот: привязка без кодов (логин+пароль), уведомления по области видимости ролей, команды /mute /unmute /help", "done": true },
         { "id": "tg-admin", "text": "Бот-помощник администратора: навигация persistent-клавиатурами и inline-кнопками", "done": true },
         { "id": "webdav", "text": "Яндекс Календарь через WebDAV (вместо закрытого CalDAV): автосинхронизация событий, детерминированные UID", "done": true },
-        { "id": "mobile-api", "text": "Mobile API v1.6: Bearer-авторизация, /api/mobile/*, push-уведомления Expo, лента событий, универсальное создание карточек", "done": true },
-        { "id": "qr-gateway", "text": "QR-шлюз: гостевые токены, deep links, Android App Links (.well-known/assetlinks.json)", "done": true },
-        { "id": "mobile-app", "text": "Публичный релиз мобильного приложения Zezar-app в сторах", "done": false }
+        { "id": "mobile-api-android", "text": "Mobile API для Android: Bearer-авторизация, /api/mobile/*, push-уведомления, лента событий, универсальное создание и редактирование карточек", "done": false },
+        { "id": "mobile-api-ios", "text": "Mobile API для IOS Bearer-авторизация, push-уведомления, лента событий, универсальное создание и редактирование карточек", "done": false },
+        { "id": "qr-gateway", "text": "QR-шлюз: гостевые токены, deep links", "done": false },
+        { "id": "mobile-app", "text": "Публичный релиз мобильног приложения Zezar-app в сторах", "done": false }
       ]
     },
     {

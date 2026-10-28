@@ -114,18 +114,6 @@
             '<div class="rm-bar"><i style="width:' + phase.progress + '%"></i></div>' +
             '<span class="rm-pct">' + phase.progress + "%</span>" +
           "</div>" +
-          '<ul class="rm-goals">' +
-            phase.goals.map(g => {
-              const done = goalDone(phase, g);
-              return '<li data-goal="' + esc(g.id) + '" class="' + (done ? "checked" : "") + '">' +
-                '<button class="rm-check" aria-pressed="' + done + '" title="' +
-                  (g.done ? "Цель закрыта командой" : "Отметить, что цель достигнута") + '"' +
-                  (g.done ? " disabled" : "") + ">" + (done ? "✓" : "") + "</button>" +
-                "<span>" + esc(g.text) + "</span>" +
-                (g.done ? '<em class="rm-team">командой</em>' : "") +
-              "</li>";
-            }).join("") +
-          "</ul>" +
         "</div>";
 
       // интерактивные отметки

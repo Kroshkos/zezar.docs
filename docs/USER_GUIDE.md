@@ -15,7 +15,7 @@ tag: Guide
 * Руководитель подразделения → [Инструкция — Руководитель](#docs/INSTRUCTION_HEAD)
 * Координатор → [Инструкция — Координатор](#docs/INSTRUCTION_COORDINATOR)
 * Администратор → [Инструкция — Администратор](#docs/INSTRUCTION_ADMIN)
-* Технические специалисты / DevOps → [Инструкция — Техспециалисты](#docs/INSTRUCTION_TECH), [Деплой](#docs/DEPLOY)
+* Технические специалисты / DevOps → [Инструкция — Техспециалисты](#docs/INSTRUCTION_TECH)
 
 ## Оглавление
 
